@@ -33,3 +33,17 @@ class AllFlashCards(db.Model):
     def to_dict(self):
         return{c.name: getattr(self, c.name) for c in self.__table__.columns}
     
+    
+    
+@app.route("/create_user", methods=["GET", "POST"])
+def user():
+    content = request.json
+    new_user = Users(
+        username = content['username'],
+        password = content['password'],
+    )
+    db.session.add(new_user)
+    db.session.commit()
+
+
+

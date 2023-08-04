@@ -5,8 +5,10 @@ import openai
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import JSONType
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 ##Connect to Database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flashcards.db'
@@ -47,3 +49,6 @@ def user():
 
 
 
+
+with app.app_context():
+     db.create_all()

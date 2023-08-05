@@ -6,6 +6,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import JSONType
 from flask_cors import CORS
+from generator import Generator
 
 app = Flask(__name__)
 CORS(app)
@@ -47,8 +48,17 @@ def user():
     db.session.add(new_user)
     db.session.commit()
 
-
-
+@app.route('/create_cards', methods=['POST, GET'])
+def flashcards():
+    topic = request.args.get('topic')
+    user_id = request.args.get('user_id')
+    g = Generator(topic)
+    flash = AllFlashCards(
+        flashcards = g.parser(),
+        author_id = user_id,
+    )
+    db.session.add(flash)
+    db.session.commit()
 
 with app.app_context():
      db.create_all()
